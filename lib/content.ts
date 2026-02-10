@@ -15,13 +15,18 @@ export function configToMap(rows: Array<{ key: string; value: any }> = []) {
   return m;
 }
 
-export function todayISO() {
-  const d = new Date();
-  const y = d.getFullYear();
-  const m = String(d.getMonth() + 1).padStart(2, "0");
-  const day = String(d.getDate()).padStart(2, "0");
-  return `${y}-${m}-${day}`;
+export function todayISO(tz: string = "America/Los_Angeles") {
+  // en-CA 的日期格式天然是 YYYY-MM-DD
+  const s = new Intl.DateTimeFormat("en-CA", {
+    timeZone: tz,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(new Date());
+
+  return s; // e.g. "2026-02-09"
 }
+
 
 export async function fetchContent(): Promise<ContentBundle> {
   const url = process.env.NEXT_PUBLIC_CONTENT_URL!;
